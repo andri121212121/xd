@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Besa a este guapo</title>
+
+<style>
+    body {
+        margin: 0;
+        background: #111;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .persona {
+        width: 400px;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    .beso {
+        position: absolute;
+        width: 60px;
+        pointer-events: none;
+        animation: aparecer 0.3s ease;
+    }
+
+    @keyframes aparecer {
+        from {
+            transform: scale(0);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container" id="contenedor">
+    <img src="randal.PNG" class="persona" id="persona">
+</div>
+
+<audio id="sonido" src="soundkiss.mp3"></audio>
+
+<script>
+const persona = document.getElementById("persona");
+const contenedor = document.getElementById("contenedor");
+const sonido = document.getElementById("sonido");
+
+let puedeClick = true; // control del cooldown
+
+persona.addEventListener("click", function() {
+
+    if (!puedeClick) return; // si está en cooldown, no hace nada
+
+    puedeClick = false; // activa cooldown
+
+    // reproducir sonido
+    sonido.currentTime = 0;
+    sonido.play();
+
+    // crear imagen de beso
+    const beso = document.createElement("img");
+    beso.src = "besos.png";
+    beso.classList.add("beso");
+
+    // tamaño del contenedor
+    const ancho = contenedor.clientWidth;
+    const alto = contenedor.clientHeight;
+
+    // posición aleatoria
+    const x = Math.random() * (ancho - 60);
+    const y = Math.random() * (alto - 60);
+
+    beso.style.left = x + "px";
+    beso.style.top = y + "px";
+
+    contenedor.appendChild(beso);
+
+    // quitar cooldown después de 1 segundo
+    setTimeout(() => {
+        puedeClick = true;
+    }, 1000);
+});
+</script>
+
+</body>
+</html>
